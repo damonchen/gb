@@ -4,14 +4,42 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/damonchen/gb/build"
 	"github.com/urfave/cli"
 )
 
 var (
-	history *History
+	history     *History
+	projectPath string
 )
+
+func getGitProjectPath(path string) string {
+	isGitDir := func(path string) bool {
+		gitDir := filepath.Join(path, ".git")
+		if stat, err := os.Stat(gitDir); err != nil {
+			if os.IsExist(err) {
+				return stat.IsDir()
+			}
+		}
+		return false
+	}
+
+	testPath := path
+	for {
+		if isGitDir(testPath) {
+			return testPath
+		}
+
+		if testPath == "/" {
+			break
+		}
+
+		testPath = filepath.Dir(testPath)
+	}
+	return ""
+}
 
 // Run start command
 func Run() {
@@ -29,6 +57,16 @@ func Run() {
 	}
 
 	app.Before = func(ctx *cli.Context) error {
+		// search current working directory is in git project
+		workDir, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		projectPath = getGitProjectPath(workDir)
+		if len(projectPath) == 0 {
+			return errors.New("current directory is not in git project")
+		}
+
 		// check git exists
 		git := Git{}
 		if !git.Exist() {
@@ -43,7 +81,7 @@ func Run() {
 		historyFile := getHistoryFileName()
 		h, err := NewHistory(historyFile)
 		if err != nil {
-			fmt.Fprintf(os.Stderr,"open history error %s\n", err)
+			fmt.Fprintf(os.Stderr, "open history error %s\n", err)
 			return err
 		}
 

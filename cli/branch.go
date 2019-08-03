@@ -23,6 +23,7 @@ func wrapperBranch(branchName string, realDo func(string) error) error {
 
 	record := HistoryRecord{
 		FromName:    gitLog.BranchName,
+		ProjectPath: projectPath,
 		ToName:      branchName,
 		Occur:       time.Now(),
 		FromCommit:  gitLog.Commit,

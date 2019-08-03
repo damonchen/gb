@@ -13,6 +13,8 @@ import (
 // HistoryRecord history record
 type HistoryRecord struct {
 	ID int
+	// project name
+	ProjectPath string
 	// git branch name
 	FromName string
 	// git branch name
@@ -80,7 +82,7 @@ func (h *History) Close() error {
 //GetAllHistoryRecord get all history
 func (h *History) GetAllHistoryRecord() ([]HistoryRecord, error) {
 	var historyRecords []HistoryRecord
-	h.db.Order("occur desc").Find(&historyRecords)
+	h.db.Order("occur desc").Where("project_path = ?", projectPath).Find(&historyRecords)
 	if h.db.Error != nil {
 		return nil, h.db.Error
 	}
@@ -100,11 +102,11 @@ func (h *History) AddNewHistoryRecord(historyRecord HistoryRecord) (int, error) 
 
 func (h *History) RemoveAllHistoryRecord() error {
 	record := HistoryRecord{}
-	h.db.Delete(record)
+	h.db.Where("project_path = ?", projectPath).Delete(record)
 	return h.db.Error
 }
 
 func (h *History) RemoveHistoryRecord(branchName string) error {
-	h.db.Where("to_name = ?", branchName).Delete(&HistoryRecord{})
+	h.db.Where("to_name = ? and project_path = ?", branchName, projectPath).Delete(&HistoryRecord{})
 	return h.db.Error
 }
