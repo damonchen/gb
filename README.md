@@ -1,4 +1,4 @@
-# gco
+# gb
 
 a tool for git branch history
 
@@ -9,18 +9,19 @@ a tool for git branch history
 - build new branch
 
 ```
-gco n branch-name
-``
+gb n branch-name
+```
 
 - switch branch
 
 ```
-gco branch-name
+gb branch-name
+gb s branch-name
 ```
 
 - show history
 
 ```
-gco ls
+gb h
 ```
 
