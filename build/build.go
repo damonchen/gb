@@ -7,12 +7,14 @@ import (
 
 var (
 	// GitCommit git commit info
-	GitCommit string
+	Commit string
 	// GitBranch git branch info
-	GitBranch string
+	Branch string
+	// Date
+	Date string
 )
 
 // Version version info
 func Version() string {
-	return fmt.Sprintf("commit: %s\n\tbranch: %s\n\tgo:%s", GitCommit, GitBranch, runtime.Version())
+	return fmt.Sprintf("build: %s\ncommit: %s\nbranch: %s\ngo: %s", Date, Commit, Branch, runtime.Version())
 }

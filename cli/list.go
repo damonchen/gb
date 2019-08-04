@@ -7,7 +7,7 @@ import (
 )
 
 func listHistory(ctx *cli.Context) error {
-	historyRecords, err := history.GetAllHistoryRecord()
+	historyRecords, err := history.GetProjectBranchSwitchRecords()
 	if err != nil {
 		return err
 	}
@@ -22,5 +22,5 @@ func listHistory(ctx *cli.Context) error {
 
 // remove history information
 func removeHistory(ctx *cli.Context) error {
-	return history.RemoveAllHistoryRecord()
+	return history.RemoveProjectBranchSwitchRecords()
 }

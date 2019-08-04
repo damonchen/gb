@@ -1,0 +1,19 @@
+{
+    "version": "0.6.0",
+    "tool": "go install -v -ldflags '-s -w'",
+    "importpath": "github.com/damonchen/gb/build",
+    "variables": [
+        {
+            "variable": "Branch",
+            "value": "$(git symbolic-ref --short -q HEAD)"
+        },
+        {
+            "variable": "Date",
+            "value": "{{.Date}}"
+        },
+        {
+            "variable": "Commit",
+            "value": "{{.GitCommit}}"
+        }
+    ]
+}

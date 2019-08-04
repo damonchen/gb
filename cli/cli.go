@@ -12,18 +12,16 @@ import (
 
 var (
 	history     *History
-	projectPath string
 )
 
 func getGitProjectPath(path string) string {
 	isGitDir := func(path string) bool {
 		gitDir := filepath.Join(path, ".git")
 		if stat, err := os.Stat(gitDir); err != nil {
-			if os.IsExist(err) {
-				return stat.IsDir()
-			}
+			return false
+		} else {
+			return stat.IsDir()
 		}
-		return false
 	}
 
 	testPath := path
@@ -62,7 +60,7 @@ func Run() {
 		if err != nil {
 			return err
 		}
-		projectPath = getGitProjectPath(workDir)
+		projectPath := getGitProjectPath(workDir)
 		if len(projectPath) == 0 {
 			return errors.New("current directory is not in git project")
 		}
@@ -79,7 +77,7 @@ func Run() {
 		}
 
 		historyFile := getHistoryFileName()
-		h, err := NewHistory(historyFile)
+		h, err := NewHistory(projectPath, historyFile)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "open history error %s\n", err)
 			return err

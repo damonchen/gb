@@ -21,16 +21,15 @@ func wrapperBranch(branchName string, realDo func(string) error) error {
 		return err
 	}
 
-	record := HistoryRecord{
+	record := BranchSwitchRecord{
 		FromName:    gitLog.BranchName,
-		ProjectPath: projectPath,
 		ToName:      branchName,
 		Occur:       time.Now(),
 		FromCommit:  gitLog.Commit,
 		FromSubject: gitLog.Subject,
 	}
 
-	_, err = history.AddNewHistoryRecord(record)
+	_, err = history.AddNewProjectBranchSwitchRecord(record)
 	return err
 
 }
@@ -50,7 +49,7 @@ func switchBranch(ctx *cli.Context) error {
 }
 
 func switchBranchComplete(ctx *cli.Context) {
-	historyRecords, err := history.GetAllHistoryRecord()
+	historyRecords, err := history.GetProjectBranchSwitchRecords()
 	if err != nil {
 		return
 	}
@@ -106,7 +105,7 @@ func deleteBranch(ctx *cli.Context) error {
 	}
 
 	return nil
-	//return history.RemoveHistoryRecord(branchName)
+	//return history.RemoveProjectBranchSwitchRecord(branchName)
 }
 
 func listBranches(ctx *cli.Context) error {
