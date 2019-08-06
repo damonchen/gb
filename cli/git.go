@@ -135,3 +135,16 @@ func (g Git) ListBranches() error {
 	fmt.Printf("%s",string(output))
 	return nil
 }
+
+func (g Git) PushBranches() error {
+	var branch, err = g.CurrentBranchName()
+	if err != nil {
+		return err
+	}
+
+	output, _, err := g.do([]string{"push", "--set-upstream", "origin", branch})
+	if err != nil{
+		return 	errors.New(string(output))
+	}
+	return nil
+}

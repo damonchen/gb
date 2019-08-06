@@ -44,10 +44,16 @@ var (
 		},
 		{
 			Name:      "l",
-			Aliases:   []string{"list"},
+			Aliases:   []string{"list", "ls"},
 			Usage:     "List local branch",
 			UsageText: "gb ls",
 			Action:    listBranches,
+		},		{
+			Name:      "p",
+			Aliases:   []string{"push"},
+			Usage:     "push local branch to remote branch",
+			UsageText: "gb p",
+			Action:    pushBranch,
 		},
 	}
 )

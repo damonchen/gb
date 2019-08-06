@@ -112,3 +112,14 @@ func listBranches(ctx *cli.Context) error {
 	git := Git{}
 	return git.ListBranches()
 }
+
+
+func pushBranch(ctx *cli.Context) error {
+	git := Git{}
+	err := git.PushBranches()
+	if err != nil {
+		return err
+	}
+	fmt.Println("push to remote success")
+	return nil
+}
